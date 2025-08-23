@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "tools_logger_handler"
+version = "0.1.0"
+description = "A logging handler that sends logs to RabbitMQ."
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Gabriel Valderramos", email = "gabrielvalderramos@gmail.com"},
+]
+keywords = ["logging", "rabbitmq", "handler", "monitoring"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pika>=1.2.0",
+]
+[project.urls]
+"Homepage" = "http://github.com/gvalderramos/tools-monitoring-project"
+"Repository" = "https://github.com/gvalderramos/tools-monitoring-project"
