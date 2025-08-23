@@ -59,6 +59,9 @@ class ToolLoggerHandler(logging.Handler):
             Exception: If there is an error sending the log record.
         """
         try:
+            if getattr(record, "queue"):
+                self.queue = record.queue
+                
             log_entry = LogEntryMessage(
                 service=self._service_name,
                 level=record.levelname,
