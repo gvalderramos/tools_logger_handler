@@ -23,3 +23,16 @@ dependencies = [
 [project.urls]
 "Homepage" = "http://github.com/gvalderramos/tools-monitoring-project"
 "Repository" = "https://github.com/gvalderramos/tools-monitoring-project"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+# This tells setuptools where to find the source
+package-dir = {"" = "src"}
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
