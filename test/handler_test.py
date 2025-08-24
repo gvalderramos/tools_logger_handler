@@ -3,14 +3,14 @@ import pytest
 import json
 from unittest.mock import patch, MagicMock
 
-from tools_logger_handler.handler import ToolLoggerHandler
-from tools_logger_handler.misc import QueueNames, LogEntryMessage
+from tool_logger_handler.handler import ToolLoggerHandler
+from tool_logger_handler.misc import QueueNames, LogEntryMessage
 
 
 @pytest.fixture
 def mock_pika():
     """Fixture to mock pika connection and channel."""
-    with patch("tools_logger_handler.handler.pika.BlockingConnection") as mock_conn_cls:
+    with patch("tool_logger_handler.handler.pika.BlockingConnection") as mock_conn_cls:
         mock_conn = MagicMock()
         mock_channel = MagicMock()
         mock_conn.channel.return_value = mock_channel
