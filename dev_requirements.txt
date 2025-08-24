@@ -1,4 +1,6 @@
 black
 pytest
+pytest-asyncio
 flake8
 pika
+aio-pika
