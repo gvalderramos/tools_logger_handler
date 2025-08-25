@@ -57,7 +57,7 @@ class ToolLoggerHandlerBase(logging.Handler):
         if not isinstance(value, QueueNames):
             raise ValueError("queue must be an instance of QueueNames Enum")
         self._queue = value
-        self._channel.queue_declare(queue=self.queue.name, durable=True)
+        self._channel.queue_declare(queue=self.queue.value, durable=True)
 
     def emit(self, record: logging.LogRecord) -> None:
         """Send the log record to the RabbitMQ queue.
@@ -86,7 +86,7 @@ class ToolLoggerHandler(ToolLoggerHandlerBase):
             pika.ConnectionParameters(host=self._host)
         )
         self._channel = self._connection.channel()
-        self._channel.queue_declare(queue=self.queue.name, durable=True)
+        self._channel.queue_declare(queue=self.queue.value, durable=True)
 
     def emit(self, record: logging.LogRecord) -> None:
         """Send the log record to the RabbitMQ queue.
@@ -106,13 +106,13 @@ class ToolLoggerHandler(ToolLoggerHandlerBase):
             log_entry = self._get_log_entry(record)
             self._channel.basic_publish(
                 exchange="",
-                routing_key=self.queue.name,
+                routing_key=self.queue.value,
                 body=json.dumps(log_entry.__dict__),
                 properties=pika.BasicProperties(
                     delivery_mode=2,  # make message persistent
                 ),
             )
-            print(f" [x] Sent log to {self.queue.name}: {log_entry}")
+            print(f" [x] Sent log to {self.queue.value}: {log_entry}")
         except Exception as e:
             print(f"Failed to emit log record: {e}", file=sys.stderr)
 
@@ -140,7 +140,7 @@ class AsyncToolLoggerHandler(ToolLoggerHandlerBase):
                 f"amqp://guest:guest@{self._host}/", loop=self._loop
             )
             self._channel = await self._connection.channel()
-            await self._channel.declare_queue(self.queue.name, durable=True)
+            await self._channel.declare_queue(self.queue.value, durable=True)
         except Exception as e:
             print(f"AsyncToolLoggerHandler failed to connect: {e}")
 
@@ -153,7 +153,7 @@ class AsyncToolLoggerHandler(ToolLoggerHandlerBase):
                 print("Channel not ready, dropping log message:", message)
                 return
         
-        if queue_name != self.queue.name:
+        if queue_name != self.queue.value:
             await self._channel.declare_queue(queue_name, durable=True)
 
         await self._channel.default_exchange.publish(
@@ -169,7 +169,7 @@ class AsyncToolLoggerHandler(ToolLoggerHandlerBase):
         log_entry = self._get_log_entry(record)
 
         # Determine target queue (default or overridden per record)
-        target_queue = getattr(record, "queue", self.queue).name
+        target_queue = getattr(record, "queue", self.queue).value
 
         # Schedule sending asynchronously
         asyncio.ensure_future(
