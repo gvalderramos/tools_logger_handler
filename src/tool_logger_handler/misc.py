@@ -3,6 +3,7 @@ from enum import Enum
 
 
 class QueueNames(str, Enum):
+    TOOLS = "tool_logs"
     LOGS = "logs"
     ALERTS = "alerts"
     TRACES = "traces"
