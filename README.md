@@ -87,6 +87,8 @@ your-project/
 │     └─ misc.py           # Supporting enums/classes (QueueNames, LogEntryMessage)
 ├─ tests/
 │  └─ test_handler.py      # Unit tests with pika mocked
+├─ examples/
+│  └─ log_system.py        # Small example how to send logs to RabbitMQ system
 ├─ pyproject.toml
 ├─ pytest.ini
 └─ README.md
@@ -130,9 +132,15 @@ your-project/
 
 The handler sits at the **producer side**: your tool logs normally with Python’s `logging`, and the handler publishes structured log records to RabbitMQ. The collector service reads messages, normalizes them, and pushes metrics to a time-series database, which Grafana can visualize.
 
+## RabbitMQ and Listener
+
+The queue and services are available on this repository:
+https://github.com/gvalderramos/tools_monitoring
+
 ## Roadmap
 
-- [ ] Provide Docker Compose for local development with RabbitMQ
+- [X] Create an async log handler using aio_pika
+- [x] Provide Docker Compose for local development with RabbitMQ
 - [ ] Add metrics exporter for Prometheus integration
 
 ## License
